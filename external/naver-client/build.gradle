@@ -1,0 +1,6 @@
+jar.enabled = true
+
+dependencies {
+  // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+  implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
