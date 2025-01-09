@@ -4,37 +4,52 @@ plugins {
   id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.library'
-version = '0.0.1-SNAPSHOT'
+subprojects {
+  apply plugin: 'java'
+  apply plugin: 'org.springframework.boot'
+  apply plugin: 'io.spring.dependency-management'
 
-java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
+  group = 'com.library'
+  version = '0.0.1-SNAPSHOT'
+
+  java {
+    toolchain {
+      languageVersion = JavaLanguageVersion.of(21)
+    }
   }
-}
 
-configurations {
-  compileOnly {
-    extendsFrom annotationProcessor
+  configurations {
+    compileOnly {
+      extendsFrom annotationProcessor
+    }
   }
-}
 
-repositories {
-  mavenCentral()
-}
+  repositories {
+    mavenCentral()
+  }
 
-dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.kafka:spring-kafka'
-  compileOnly 'org.projectlombok:lombok'
-  runtimeOnly 'com.h2database:h2'
-  annotationProcessor 'org.projectlombok:lombok'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.kafka:spring-kafka-test'
-  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
+/**
+ * dependencies
+ * api 키워드: 해당 모듈을 의존하는 다른 모듈도 사용 가능 (재사용성이 높아지지만, 모듈간의 결합도가 강해짐)
+ * implementation 키워드: 내부에서만 사용 (모듈간의 결합도를 낮춰서 캡슐화가 유지됨)
+ */
+  dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+  }
 
-tasks.named('test') {
-  useJUnitPlatform()
+  tasks.named('test') {
+    useJUnitPlatform()
+  }
+
+  // jar 기본값: false (필요한 것만 true 할 것)
+  bootJar.enabled = false
+  jar.enabled = false
 }
