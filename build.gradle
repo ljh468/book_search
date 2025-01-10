@@ -1,5 +1,4 @@
 plugins {
-  id 'java'
   id 'org.springframework.boot' version '3.4.1'
   id 'io.spring.dependency-management' version '1.1.7'
 }
@@ -11,6 +10,7 @@ ext {
 
 subprojects {
   apply plugin: 'java'
+  apply plugin: 'groovy'
   apply plugin: 'org.springframework.boot'
   apply plugin: 'io.spring.dependency-management'
 
@@ -52,13 +52,19 @@ subprojects {
   dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.kafka:spring-kafka'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // implementation 'org.springframework.kafka:spring-kafka'
+    // testImplementation 'org.springframework.kafka:spring-kafka-test'
+
+    // runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // spock 테스트
+    testImplementation 'org.spockframework:spock-core:2.4-M5-groovy-4.0'
+    testImplementation 'org.spockframework:spock-spring:2.4-M5-groovy-4.0'
   }
 
   tasks.named('test') {
