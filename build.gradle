@@ -51,12 +51,9 @@ subprojects {
    * implementation 키워드: 내부에서만 사용 (모듈간의 결합도를 낮춰서 캡슐화가 유지됨)
    */
   dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
-    runtimeOnly 'com.h2database:h2'
 
     // Spring Boot Starter Test (junit)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
