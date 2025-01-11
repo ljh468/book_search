@@ -59,6 +59,8 @@ subprojects {
     // testImplementation 'org.springframework.kafka:spring-kafka-test'
 
     runtimeOnly 'com.h2database:h2'
+
+    // Spring Boot Starter Test (junit)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -69,6 +71,9 @@ subprojects {
 
   tasks.named('test') {
     useJUnitPlatform()
+    testLogging {
+      events "passed", "skipped", "failed"
+    }
   }
 
   // jar 기본값: false (필요한 것만 true 할 것)
