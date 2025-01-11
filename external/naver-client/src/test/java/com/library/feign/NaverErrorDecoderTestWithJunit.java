@@ -1,19 +1,21 @@
 package com.library.feign;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.library.ApiException;
+import com.library.ErrorType;
 import feign.Request;
 import feign.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -31,7 +33,7 @@ class NaverErrorDecoderTestWithJunit {
   }
 
   @Test
-  @DisplayName("에러 디코더에서 에러 발생 시 RuntimeException 예외가 발생한다.")
+  @DisplayName("에러 디코더에서 에러 발생 시 ApiException 예외가 발생한다.")
   void testDecode_throwsRuntimeException() throws Exception {
     Response.Body responseBody = mock(Response.Body.class);
 
@@ -54,8 +56,14 @@ class NaverErrorDecoderTestWithJunit {
 
 
     // 테스트 실행 및 검증
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> errorDecoder.decode("string", response));
-    assertEquals("error!!", exception.getMessage());
+    ApiException exception = assertThrows(ApiException.class, () -> errorDecoder.decode("string", response));
+
+    // 논리적 단위로 묶음
+    assertAll("exception",
+              () -> assertEquals("error!!", exception.getErrorMessage()),
+              () -> assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus()),
+              () -> assertEquals(ErrorType.EXTERNAL_API_ERROR, exception.getErrorType())
+    );
 
     // verify: 각 메서드가 1번 호출되었는지 확인
     verify(responseBody, times(1)).asInputStream(); // responseBody.asInputStream()가 한 번 호출되었는지 확인
