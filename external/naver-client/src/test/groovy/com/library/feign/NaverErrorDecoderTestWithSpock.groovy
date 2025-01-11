@@ -5,9 +5,9 @@ import feign.Request
 import feign.Response
 import spock.lang.Specification
 
-class NaverErrorDecoderTest extends Specification {
+class NaverErrorDecoderTestWithSpock extends Specification {
   ObjectMapper objectMapper = Mock()
-  NaverErrorDecoder erroDecoder = new NaverErrorDecoder(objectMapper)
+  NaverErrorDecoder errorDecoder = new NaverErrorDecoder(objectMapper)
 
   def "에러디코더에서 에러발생 시 RuntimeException 예외가 발생한다."() {
     given:
@@ -26,7 +26,7 @@ class NaverErrorDecoderTest extends Specification {
     1 * objectMapper.readValue(*_) >> new NaverErrorResponse("error!!", "SE03")
 
     when:
-    erroDecoder.decode(_ as String, response)
+    errorDecoder.decode(_ as String, response)
 
     then:
     // 특정 예외가 발생했는지 확인할 때 사용

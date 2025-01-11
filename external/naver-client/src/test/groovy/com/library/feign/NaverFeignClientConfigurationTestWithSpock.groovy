@@ -4,7 +4,7 @@ import feign.RequestTemplate
 import spock.lang.Specification
 
 // requestTemplate에 헤더값이 제대로 들어갔는지 테스트
-class NaverFeignClientConfigurationTest extends Specification {
+class NaverFeignClientConfigurationTestWithSpock extends Specification {
 
   NaverFeignClientConfiguration configuration
 

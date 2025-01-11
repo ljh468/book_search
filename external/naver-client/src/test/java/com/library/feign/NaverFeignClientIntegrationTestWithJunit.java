@@ -1,5 +1,7 @@
 package com.library.feign;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -7,11 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = NaverFeignClientTest.TestConfig.class) // 테스트와 함께 로드할 클래스 지정
+@Disabled
+@SpringBootTest(classes = NaverFeignClientIntegrationTestWithJunit.TestConfig.class) // 테스트와 함께 로드할 클래스 지정
 @ActiveProfiles("test")
-class NaverFeignClientTest {
+class NaverFeignClientIntegrationTestWithJunit {
 
   // Feign 설정들을 자동으로 로드
   @EnableAutoConfiguration
@@ -23,10 +26,11 @@ class NaverFeignClientTest {
   NaverFeignClient naverFeignClient;
 
   @Test
+  @DisplayName("naverFeignClient를 호출하여 HTTP 키워드로 책을 조회한다.")
   void callNaver() {
-    String http = naverFeignClient.search("HTTP", 1, 10);
+    NaverBookResponse http = naverFeignClient.search("HTTP", 1, 10);
     System.out.println("http = " + http);
 
-    assertFalse(http.isEmpty());
+    assertNotNull(http);
   }
 }

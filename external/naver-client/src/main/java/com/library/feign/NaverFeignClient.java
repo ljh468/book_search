@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface NaverFeignClient {
 
   @GetMapping("/v1/search/book.json")
-  String search(@RequestParam("query") String query,
-                @RequestParam("start") int start,
-                @RequestParam("display") int display);
+  NaverBookResponse search(@RequestParam("query") String query,
+                           @RequestParam("start") int start,
+                           @RequestParam("display") int display);
 }

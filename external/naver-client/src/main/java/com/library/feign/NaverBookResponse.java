@@ -3,17 +3,22 @@ package com.library.feign;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.List;
 
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // jackson 역직렬화는 기본생성자가 필요 - PROTECTED
-public class NaverErrorResponse {
+public class NaverBookResponse {
 
-  private String errorMessage;
+  private String lastBuildDate;
 
-  private String errorCode;
+  private int total;
 
-  public NaverErrorResponse(String errorMessage, String errorCode) {
-    this.errorMessage = errorMessage;
-    this.errorCode = errorCode;
-  }
+  private int start;
+
+  private int display;
+
+  private List<Item> items;
 }
