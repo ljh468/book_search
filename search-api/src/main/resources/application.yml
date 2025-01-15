@@ -21,3 +21,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 100 # 슬라이딩 윈도우 사이즈
+        minimum-number-of-calls: 10 # 최소 요청수
+        wait-duration-in-open-state:
+          seconds: 20 # open 상태에서 기다리는 시간
+        failure-rate-threshold: 50 # 실패율
+        permitted-number-of-calls-in-half-open-state: 10 # half-open 상태에서 허용되는 호출 수
+#    instances:
+#      myName: # 서킷브레이커가 여러개인 경우 이름을 지정
+#        base-config: default # 설정들을 오버라이드 할 수 있음
+#        sliding-window-size: 50
