@@ -7,13 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.stream.Collectors;
 
-import static com.library.ErrorType.INVALID_PARAMETER;
-import static com.library.ErrorType.UNKNOWN;
+import static com.library.ErrorType.*;
 import static java.util.Objects.nonNull;
 
 @Slf4j
@@ -32,24 +34,52 @@ public class GlobalExceptionHandler {
 
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleException(Exception exception) {
-    log.error("Exception occurred. message={}, className={}", exception.getMessage(), exception.getClass().getName());
-    // ApiException의 HttpStatus는 중복으로 내려줄 필요가 없음
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                         .body(new ErrorResponse(UNKNOWN.getDescription(),
-                                                 UNKNOWN));
-
-  }
-
   // @Valid에서 발생하는 에러를 하기 위해서는 BindException 핸들링 해줘야 함
   @ExceptionHandler(BindException.class)
   public ResponseEntity<ErrorResponse> handleException(BindException bindException) {
     log.error("Bind Exception occurred. message={}, className={}",
               bindException.getMessage(), bindException.getClass().getName());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                         .body(new ErrorResponse(createMessage(bindException),
-                                                 INVALID_PARAMETER));
+                         .body(new ErrorResponse(createMessage(bindException), INVALID_PARAMETER));
+  }
+
+  // URL 경로가 적절하지 않을 때 (없는 URL)
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException noResourceFoundException) {
+    log.error("NoResourceFound Exception occurred. message={}, className={}",
+              noResourceFoundException.getMessage(), noResourceFoundException.getClass().getName());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                         .body(new ErrorResponse(NO_RESOURCE.getDescription(), NO_RESOURCE));
+  }
+
+  // 파라미터가 비어있을 때
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException servletRequestParameterException) {
+    log.error("MissingServletRequestParameter Exception occurred. parameterName={}, message={}, className={}",
+              servletRequestParameterException.getParameterName(),
+              servletRequestParameterException.getMessage(),
+              servletRequestParameterException.getClass().getName());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                         .body(new ErrorResponse(INVALID_PARAMETER.getDescription(), INVALID_PARAMETER));
+  }
+
+  // 파라미터가 적절하지 않을 때
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException methodArgumentTypeMismatchException) {
+    log.error("MethodArgumentTypeMismatch Exception occurred. message={}, className={}",
+              methodArgumentTypeMismatchException.getMessage(),
+              methodArgumentTypeMismatchException.getClass().getName());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                         .body(new ErrorResponse(INVALID_PARAMETER.getDescription(), INVALID_PARAMETER));
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+    log.error("Exception occurred. message={}, className={}", exception.getMessage(), exception.getClass().getName());
+    // ApiException의 HttpStatus는 중복으로 내려줄 필요가 없음
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                         .body(new ErrorResponse(UNKNOWN.getDescription(), UNKNOWN));
+
   }
 
   private String createMessage(BindException bindException) {

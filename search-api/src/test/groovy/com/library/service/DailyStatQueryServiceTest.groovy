@@ -1,7 +1,7 @@
 package com.library.service
 
-
 import com.library.repository.DailyStatRepository
+import org.springframework.data.domain.Pageable
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -29,11 +29,24 @@ class DailyStatQueryServiceTest extends Specification {
     then:
     1 * dailyStatRepository.countByQueryAndEventDateTimeBetween(
         givenQuery,
-        LocalDateTime.of(2024, 5, 1, 0, 0,0),
-        LocalDateTime.of(2024, 5, 1, 23, 59,59, 999999999),
+        LocalDateTime.of(2024, 5, 1, 0, 0, 0),
+        LocalDateTime.of(2024, 5, 1, 23, 59, 59, 999999999),
     ) >> expectedCount
 
     and:
     response.count() == expectedCount
+  }
+
+  def "findTop5Query 조회시 상위 5개의 반환을 요청한다."() {
+    given:
+    when:
+    dailyStatQueryService.findTop5Query()
+
+    then:
+    1 * dailyStatRepository.findTopByQuery(*_) >> {
+      Pageable pageable ->
+        assert pageable.getPageNumber() == 0
+        assert pageable.getPageSize() == 5
+    }
   }
 }

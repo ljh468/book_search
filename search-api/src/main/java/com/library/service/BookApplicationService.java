@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 // 비즈니스 담당하는 서비스
 @RequiredArgsConstructor
@@ -32,5 +33,9 @@ public class BookApplicationService {
 
   public StatResponse findQueryCount(String query, LocalDate date) {
     return dailyStatQueryService.findQueryCount(query, date);
+  }
+
+  public List<StatResponse> findTop5Query() {
+    return dailyStatQueryService.findTop5Query();
   }
 }
