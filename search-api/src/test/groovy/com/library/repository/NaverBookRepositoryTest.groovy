@@ -1,7 +1,7 @@
 package com.library.repository
 
-import com.library.feign.Item
-import com.library.feign.NaverBookResponse
+import com.library.Item
+import com.library.NaverBookResponse
 import com.library.feign.NaverFeignClient
 import spock.lang.Specification
 

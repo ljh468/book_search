@@ -16,7 +16,7 @@ public class DailyStatCommandService {
 
   @Transactional
   public void save(DailyStat dailyStat) {
-    log.info("save daily stats: {}", dailyStat);
-    dailyStatRepository.save(dailyStat);
+    DailyStat saveDailyStat = dailyStatRepository.save(dailyStat);
+    log.info("save daily stats: {}", saveDailyStat);
   }
 }

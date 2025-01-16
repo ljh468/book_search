@@ -1,4 +1,4 @@
-package com.library.feign;
+package com.library;
 
 import lombok.AccessLevel;
 import lombok.Getter;
