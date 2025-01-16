@@ -4,12 +4,12 @@ import feign.RequestTemplate
 import spock.lang.Specification
 
 // requestTemplate에 헤더값이 제대로 들어갔는지 테스트
-class NaverFeignClientConfigurationTestWithSpock extends Specification {
+class NaverClientConfigurationTest extends Specification {
 
-  NaverFeignClientConfiguration configuration
+  NaverClientConfiguration configuration
 
   void setup() {
-    configuration = new NaverFeignClientConfiguration()
+    configuration = new NaverClientConfiguration()
   }
 
   def "requestInterceptor의 header에 key값들이 적용된다."() {

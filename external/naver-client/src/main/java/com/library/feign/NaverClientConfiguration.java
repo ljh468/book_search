@@ -5,7 +5,7 @@ import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
-public class NaverFeignClientConfiguration {
+public class NaverClientConfiguration {
 
   @Bean
   public RequestInterceptor requestInterceptor(

@@ -2,7 +2,7 @@ package com.library.repository
 
 import com.library.entity.DailyStat
 import com.library.feign.KakaoClient
-import com.library.feign.NaverFeignClient
+import com.library.feign.NaverClient
 import jakarta.persistence.EntityManager
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +24,7 @@ class DailyStatRepositoryTest extends Specification {
   EntityManager entityManager
 
   @SpringBean
-  NaverFeignClient naverFeignClient = Mock()
+  NaverClient naverClient = Mock()
 
   @SpringBean
   KakaoClient kakaoClient = Mock()

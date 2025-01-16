@@ -1,15 +1,15 @@
 package com.library.feign
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.library.ApiException
-import com.library.ErrorType
+import com.library.exception.ApiException
+import com.library.exception.ErrorType
 import com.library.NaverErrorResponse
 import feign.Request
 import feign.Response
 import org.springframework.http.HttpStatus
 import spock.lang.Specification
 
-class NaverErrorDecoderTestWithSpock extends Specification {
+class NaverErrorDecoderTest extends Specification {
   ObjectMapper objectMapper = Mock()
   NaverErrorDecoder errorDecoder = new NaverErrorDecoder(objectMapper)
 

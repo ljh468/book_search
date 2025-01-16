@@ -1,6 +1,6 @@
 package com.library.config;
 
-import com.library.ApiException;
+import com.library.exception.ApiException;
 import com.library.controller.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.stream.Collectors;
 
-import static com.library.ErrorType.*;
+import static com.library.exception.ErrorType.*;
 import static java.util.Objects.nonNull;
 
 @Slf4j
@@ -45,7 +45,8 @@ public class GlobalExceptionHandler {
 
   // URL 경로가 적절하지 않을 때 (없는 URL)
   @ExceptionHandler(NoResourceFoundException.class)
-  public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException noResourceFoundException) {
+  public ResponseEntity<ErrorResponse> handleNoResourceFoundException(
+      NoResourceFoundException noResourceFoundException) {
     log.error("NoResourceFound Exception occurred. message={}, className={}",
               noResourceFoundException.getMessage(), noResourceFoundException.getClass().getName());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -54,7 +55,8 @@ public class GlobalExceptionHandler {
 
   // 파라미터가 비어있을 때
   @ExceptionHandler(MissingServletRequestParameterException.class)
-  public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException servletRequestParameterException) {
+  public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
+      MissingServletRequestParameterException servletRequestParameterException) {
     log.error("MissingServletRequestParameter Exception occurred. parameterName={}, message={}, className={}",
               servletRequestParameterException.getParameterName(),
               servletRequestParameterException.getMessage(),
@@ -65,7 +67,8 @@ public class GlobalExceptionHandler {
 
   // 파라미터가 적절하지 않을 때
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-  public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException methodArgumentTypeMismatchException) {
+  public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
+      MethodArgumentTypeMismatchException methodArgumentTypeMismatchException) {
     log.error("MethodArgumentTypeMismatch Exception occurred. message={}, className={}",
               methodArgumentTypeMismatchException.getMessage(),
               methodArgumentTypeMismatchException.getClass().getName());

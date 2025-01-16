@@ -2,7 +2,7 @@ package com.library.repository
 
 import com.library.Item
 import com.library.NaverBookResponse
-import com.library.feign.NaverFeignClient
+import com.library.feign.NaverClient
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -11,10 +11,10 @@ class NaverBookRepositoryTest extends Specification {
 
   BookRepository bookRepository
 
-  NaverFeignClient naverFeignClient = Mock()
+  NaverClient naverClient = Mock()
 
   void setup() {
-    bookRepository = new NaverBookRepository(naverFeignClient)
+    bookRepository = new NaverBookRepository(naverClient)
   }
 
   def "search 호출시 적절한 데이터형식으로 변환한다."() {
@@ -33,7 +33,7 @@ class NaverBookRepositoryTest extends Specification {
     )
 
     and:
-    1 * naverFeignClient.search("HTTP", 1, 2) >> response
+    1 * naverClient.search("HTTP", 1, 2) >> response
 
     when:
     def result = bookRepository.search("HTTP", 1, 2)

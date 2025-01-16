@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-public class NaverFeignClientConfigurationTestWithJunit {
+public class NaverClientConfigurationTestWithJunit {
 
-  NaverFeignClientConfiguration configuration;
+  NaverClientConfiguration configuration;
 
   @BeforeEach
   void setUp() {
-    configuration = new NaverFeignClientConfiguration();
+    configuration = new NaverClientConfiguration();
   }
 
   @Test

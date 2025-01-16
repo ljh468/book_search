@@ -9,22 +9,22 @@ import spock.lang.Ignore
 import spock.lang.Specification
 
 @Ignore
-@SpringBootTest(classes = NaverFeignClientIntegrationTestWithSpock.TestConfig.class)
+@SpringBootTest(classes = NaverClientIntegrationTest.TestConfig.class)
 @ActiveProfiles("test")
-class NaverFeignClientIntegrationTestWithSpock extends Specification {
+class NaverClientIntegrationTest extends Specification {
 
   @EnableAutoConfiguration
-  @EnableFeignClients(clients = NaverFeignClient.class)
+  @EnableFeignClients(clients = NaverClient.class)
   static class TestConfig {}
 
   @Autowired
-  NaverFeignClient naverFeignClient
+  NaverClient naverClient
 
   def "naver 호출"() {
     given:
 
     when:
-    def response = naverFeignClient.search("HTTP", 1, 10)
+    def response = naverClient.search("HTTP", 1, 10)
 
     then:
     print response
