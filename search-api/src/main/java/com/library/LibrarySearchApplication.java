@@ -5,7 +5,9 @@ import com.library.feign.NaverFeignClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableAsync;
 
+@EnableAsync
 @EnableFeignClients(clients = {NaverFeignClient.class, KakaoClient.class})
 @SpringBootApplication
 public class LibrarySearchApplication {
