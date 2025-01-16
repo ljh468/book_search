@@ -16,11 +16,9 @@ public class SearchEventHandler {
   private final DailyStatCommandService dailyStatCommandService;
 
   // 이벤트를 처리하는 Listener (별도의 쓰레드로 진행)
-  @Async
+  @Async("bsExecutor")
   @EventListener
-  public void handleEvent(SearchEvent event) throws InterruptedException {
-    // 임의로 이벤트 처리를 지연시킴
-    Thread.sleep(5000L);
+  public void handleEvent(SearchEvent event) {
     log.info("[SearchEventHandler] handleEvent: {}", event);
     dailyStatCommandService.save(new DailyStat(event.query(), event.timestamp()));
   }
