@@ -26,6 +26,7 @@ public class BookQueryService {
   // 문제가 발생할 수 있는 곳에 서킷브레이커 적용
   @CircuitBreaker(name = "naverSearch", fallbackMethod = "searchFallBack")
   public PageResult<SearchResponse> search(String query, int page, int size) {
+    log.info("[BookQueryService] naver search API call. query={}, page={}, size={}", query, page, size);
     return naverBookRepository.search(query, page, size);
   }
 
@@ -40,14 +41,14 @@ public class BookQueryService {
 
   // 서킷이 열렸을 때 처리 (카카오 API 호출)
   private PageResult<SearchResponse> handleOpenCircuit(String query, int page, int size) {
-    log.warn("[BookQueryService] Circuit Breaker is open! Fallback to kakao search.");
+    log.warn("[BookQueryService] Circuit Breaker is open! Fallback to kakao search API call.");
     return kakaoBookRepository.search(query, page, size);
   }
 
   // 서킷이 닫혔을때, 단순 에러 처리
   private PageResult<SearchResponse> handleException(String query, int page, int size, Throwable throwable) {
     // 임의로 단순에러도 카카오 검색 API 호출하도록 추가
-    log.error("[BookQueryService] An error occurred! Fallback to kakao search. errorMessage={}", throwable.getMessage());
+    log.error("[BookQueryService] An error occurred! Fallback to kakao search API call. errorMessage={}", throwable.getMessage());
     return kakaoBookRepository.search(query, page, size);
   }
 }

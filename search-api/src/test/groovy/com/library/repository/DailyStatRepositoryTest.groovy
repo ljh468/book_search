@@ -1,6 +1,7 @@
 package com.library.repository
 
 import com.library.entity.DailyStat
+import com.library.feign.KakaoClient
 import com.library.feign.NaverFeignClient
 import jakarta.persistence.EntityManager
 import org.spockframework.spring.SpringBean
@@ -24,6 +25,9 @@ class DailyStatRepositoryTest extends Specification {
 
   @SpringBean
   NaverFeignClient naverFeignClient = Mock()
+
+  @SpringBean
+  KakaoClient kakaoClient = Mock()
 
   def "데이터를 DB에 저장 후 조회한다."() {
     given:
@@ -71,15 +75,16 @@ class DailyStatRepositoryTest extends Specification {
     def now = LocalDateTime.now()
     def stat1 = new DailyStat('HTTP', now.plusMinutes(10))
     def stat2 = new DailyStat('HTTP', now.plusMinutes(10))
-    def stat3 = new DailyStat('JAVA', now.plusMinutes(10))
+    def stat3 = new DailyStat('HTTP', now.plusMinutes(10))
     def stat4 = new DailyStat('JAVA', now.plusMinutes(10))
     def stat5 = new DailyStat('JAVA', now.plusMinutes(10))
     def stat6 = new DailyStat('JAVA', now.plusMinutes(10))
-    def stat7 = new DailyStat('SPRING', now.plusMinutes(10))
+    def stat7 = new DailyStat('JAVA', now.plusMinutes(10))
     def stat8 = new DailyStat('SPRING', now.plusMinutes(10))
-    def stat9 = new DailyStat('OS', now.plusMinutes(10))
-    def stat10 = new DailyStat('NETWORK', now.plusMinutes(10))
-    dailyStatRepository.saveAll([stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8, stat9, stat10])
+    def stat9 = new DailyStat('SPRING', now.plusMinutes(10))
+    def stat10 = new DailyStat('OS', now.plusMinutes(10))
+    def stat11 = new DailyStat('NETWORK', now.plusMinutes(10))
+    dailyStatRepository.saveAll([stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8, stat9, stat10, stat11])
 
     when:
     def request = PageRequest.of(0, 3)
@@ -92,10 +97,10 @@ class DailyStatRepositoryTest extends Specification {
       response[0].query() == 'JAVA'
       response[0].count() == 4
 
-      response[1].query() == 'SPRING'
-      response[1].count() == 2
+      response[1].query() == 'HTTP'
+      response[1].count() == 3
 
-      response[2].query() == 'HTTP'
+      response[2].query() == 'SPRING'
       response[2].count() == 2
     }
   }

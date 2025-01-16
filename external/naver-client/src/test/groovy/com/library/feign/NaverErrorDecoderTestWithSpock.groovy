@@ -3,6 +3,7 @@ package com.library.feign
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.library.ApiException
 import com.library.ErrorType
+import com.library.NaverErrorResponse
 import feign.Request
 import feign.Response
 import org.springframework.http.HttpStatus
