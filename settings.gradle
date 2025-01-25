@@ -1,1 +1,12 @@
+// 루트 모듈
 rootProject.name = 'book_search'
+
+// 하위 모듈을 include
+include 'search-api'
+include 'external'
+include 'common'
+include 'external:naver-client'
+findProject(':external:naver-client')?.name = 'naver-client'
+include 'external:kakao-client'
+findProject(':external:kakao-client')?.name = 'kakao-client'
+
